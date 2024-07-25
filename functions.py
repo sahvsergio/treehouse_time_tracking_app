@@ -1,3 +1,5 @@
+import datetime
+from dateutil import relativedelta
 import csv
 import utils
 
@@ -9,7 +11,11 @@ def start_tracking(client, description):
     # in the format: HH:MM(AM/PM) YYYY-MM-DD
     # for example: 09:40AM 2023-08-11
 
-    start_time = ""
+    now=datetime.datetime.now()
+    format_string='%I:%M%p %Y-%m-%d'
+    
+
+    start_time = datetime.datetime.strftime(now, format_string)
 
     # Code to append a new job to the CSV
     with open('data.csv', 'a', newline='') as csvfile:
@@ -23,8 +29,9 @@ def stop_tracking():
     # TODO: Grab the current time and store it as a string in end_time
     # in the format: HH:MM(AM/PM) YYYY-MM-DD
     # for example: 09:40AM 2023-08-11
-
-    end_time = ""
+    now=datetime.datetime.now()
+    format_string='%I:%M%p %Y-%m-%d'
+    end_time = datetime.datetime.strftime(now, format_string)
 
     # Code to append a new job to the CSV
     with open('data.csv', 'a') as csvfile:

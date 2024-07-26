@@ -71,11 +71,27 @@ def display_range_totals(client, dates_str_list):
 
     # dates_str_list contains 2 date strings in the format YYYY-MM-DD
     # TODO: turn the two date strings in dates_str_list to datetime objects and store in range_start_dt and range_end_dt
+    format_string='%Y-%m-%d'
+    range_start_dt = datetime.datetime.strptime(dates_str_list[0],format_string)
+    range_end_dt = datetime.datetime.strptime(dates_str_list[1],format_string).replace(hour=23,minute=59,second=59)
 
-    range_start_dt = None
-    range_end_dt = None
+    total=relativedelta.relativedelta()
 
     # TODO: filter client_jobs to only include those within the start and end datetimes
+    for job in client_jobs:
+        format_string_dt = '%I:%M%p %Y-%m-%d'
+        job_end_dt=datetime.datetime.strptime(job['end_time'],format_string_dt)
+        if range_end_dt> job_end_dt>range_start_dt:
+            job_start_dt=datetime.datetime.strptime(job['start_time'],format_string_dt)
+            time_spent=relativedelta.relativedelta(job_end_dt,job_start_dt)
+            print(f"{job['description']}- {time_spent.hours} {time_spent.minutes}")
+        total+=time_spent
+    print(f"total for {client}")
+    print(f"{total.hours} hours {total.minutes} minutes")
+    # references
+    print(client)
+    print(client_jobs)
+
 
     # TODO: List out all the different jobs, and then a total time spent - just like display_all_totals
 
